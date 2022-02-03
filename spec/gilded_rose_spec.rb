@@ -95,6 +95,13 @@ describe GildedRose do
         expect(backstage_pass.sell_in).to eq(5)
         expect(backstage_pass.quality).to eq(35)
       end
+
+      it 'increases the quality value by three when sell_in is five or less' do
+        15.times { gilded_rose.update_quality }
+
+        expect(backstage_pass.sell_in).to eq(0)
+        expect(backstage_pass.quality).to eq(50)
+      end
     end
   end
 end
