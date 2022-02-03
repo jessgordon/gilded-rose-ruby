@@ -35,3 +35,26 @@ HINT: Test first FTW!
 
 Once you have completed the challenge and feel happy with your solution, here's a form to help you reflect on the quality of your code:
 https://docs.google.com/forms/d/e/1FAIpQLSdi4pNXpobmSpdw8T0dml4m6NrQ71IdEzwO5hA9v9_ZzmW7MA/viewform
+
+## Planning
+
+- item
+  - `SellIn` value: denotes the number of days we have to sell the item
+  - `Quality` value: denotes how valuable the item is
+  
+- At the end of each day our system lowers both values for every item
+
+- Once the sell by date has passed, Quality degrades twice as fast
+- The Quality of an item is never negative
+- “Aged Brie” actually increases in Quality the older it gets
+- The Quality of an item is never more than 50
+- “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
+- “Backstage passes”, like aged brie, increases in Quality as it’s `SellIn` value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert
+
+We have recently signed a supplier of conjured items. This requires an update to our system:
+
+* “Conjured” items degrade in Quality twice as fast as normal items
+
+# Challenges
+
+- how can I double items instances when their values get changed throughout the update_quality method?
