@@ -59,6 +59,12 @@ describe GildedRose do
       it 'increases the quality value by one each day for Aged Brie' do
         expect { gilded_rose.update_quality }.to change { aged_brie.quality }.from(0).to(1)
       end
+
+      it 'ensures the quality of an item is never more than 50' do
+        60.times { gilded_rose.update_quality }
+
+        expect(aged_brie.quality).to be(50)
+      end
     end
   end
 end
