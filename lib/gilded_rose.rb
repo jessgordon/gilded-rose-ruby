@@ -9,22 +9,26 @@ class GildedRose
 
   #  make a seperate method for update sell_in
 
-  def update_quality
+  def daily_update
     @items.each do |item|
       unless item.name == "Sulfuras, Hand of Ragnaros"
         update_sell_in(item)
-        if item.name == "Aged Brie"
-          update_aged_brie_quality(item)
-        elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
-          update_backstage_passes_quality(item)
-        else
-          update_quality_default(item)
-        end
+        update_quality(item)
       end
     end
   end
 
   private
+
+  def update_quality(item)
+    if item.name == "Aged Brie"
+      update_aged_brie_quality(item)
+    elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
+      update_backstage_passes_quality(item)
+    else
+      update_quality_default(item)
+    end
+  end
 
   def update_aged_brie_quality(aged_brie)
     aged_brie.quality += 1
