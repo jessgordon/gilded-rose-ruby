@@ -63,3 +63,4 @@ We have recently signed a supplier of conjured items. This requires an update to
 
 - add simplecov
 - go over how to use context blocks
+- add some more tests for sell_in to check that's decreasing as it should be

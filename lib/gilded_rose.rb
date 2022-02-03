@@ -34,28 +34,16 @@ class GildedRose
     if aged_brie.quality < 50
       aged_brie.quality += 1
     end
+    aged_brie.sell_in = aged_brie.sell_in - 1
   end
 
-  def update_backstage_passes_quality(item)
-    if item.quality < 50
-      item.quality = item.quality + 1
-      if item.name == "Backstage passes to a TAFKAL80ETC concert"
-        if item.sell_in < 11
-          if item.quality < 50
-            item.quality = item.quality + 1
-          end
-        end
-        if item.sell_in < 6
-          if item.quality < 50
-            item.quality = item.quality + 1
-          end
-        end
-      end
-    end
-    item.sell_in = item.sell_in - 1
-    if item.sell_in < 0
-      item.quality = item.quality - item.quality
-    end
+  def update_backstage_passes_quality(backstage_pass)
+    backstage_pass.sell_in = backstage_pass.sell_in - 1
+    backstage_pass.quality += 1
+    backstage_pass.quality += 1 if backstage_pass.sell_in < 10
+    backstage_pass.quality += 1 if backstage_pass.sell_in < 5
+    backstage_pass.quality = 0 if backstage_pass.sell_in < 0
+    backstage_pass.quality = 50 if backstage_pass.quality > 50
   end
 end
 
