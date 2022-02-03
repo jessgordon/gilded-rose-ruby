@@ -19,7 +19,7 @@ class GildedRose
           if item.quality > 0
             item.quality = item.quality - 1
           end
-          item.sell_in = item.sell_in - 1
+          update_sell_in(item)
           if item.sell_in < 0
             if item.quality > 0
               item.quality = item.quality - 1
@@ -33,13 +33,13 @@ class GildedRose
   private
 
   def update_aged_brie_quality(aged_brie)
+    update_sell_in(aged_brie)
     aged_brie.quality += 1
     guard_quality_upper_limit(aged_brie)
-    aged_brie.sell_in = aged_brie.sell_in - 1
   end
 
   def update_backstage_passes_quality(backstage_pass)
-    backstage_pass.sell_in = backstage_pass.sell_in - 1
+    update_sell_in(backstage_pass)
     backstage_pass.quality += 1
     backstage_pass.quality += 1 if backstage_pass.sell_in < 10
     backstage_pass.quality += 1 if backstage_pass.sell_in < 5
@@ -49,6 +49,10 @@ class GildedRose
 
   def guard_quality_upper_limit(item)
     item.quality = 50 if item.quality > DEFAULT_MAX_QUALITY
+  end
+
+  def update_sell_in(item)
+    item.sell_in -= 1
   end
 end
 
