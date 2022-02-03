@@ -1,5 +1,7 @@
 class GildedRose
 
+  DEFAULT_MAX_QUALITY = 50
+
   def initialize(items)
     @items = items
   end
@@ -31,9 +33,8 @@ class GildedRose
   private
 
   def update_aged_brie_quality(aged_brie)
-    if aged_brie.quality < 50
-      aged_brie.quality += 1
-    end
+    aged_brie.quality += 1
+    guard_quality_upper_limit(aged_brie)
     aged_brie.sell_in = aged_brie.sell_in - 1
   end
 
@@ -43,7 +44,11 @@ class GildedRose
     backstage_pass.quality += 1 if backstage_pass.sell_in < 10
     backstage_pass.quality += 1 if backstage_pass.sell_in < 5
     backstage_pass.quality = 0 if backstage_pass.sell_in < 0
-    backstage_pass.quality = 50 if backstage_pass.quality > 50
+    guard_quality_upper_limit(backstage_pass)  
+  end
+
+  def guard_quality_upper_limit(item)
+    item.quality = 50 if item.quality > DEFAULT_MAX_QUALITY
   end
 end
 
