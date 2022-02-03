@@ -3,12 +3,13 @@ require 'gilded_rose'
 describe GildedRose do
   describe '#update_quality' do
 
-    # - “Backstage passes”, like aged brie, increases in Quality as it’s `SellIn` value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert
     let(:vest) { Item.new(name="+5 Dexterity Vest", sell_in=10, quality=20) }
     let(:potion) { Item.new(name="Elixir of the Mongoose", sell_in=5, quality=7) }
     let(:aged_brie) { Item.new(name="Aged Brie", sell_in=2, quality=0) }
     let(:sulfuras) { Item.new(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=50) }
-    let(:gilded_rose) { GildedRose.new([vest, potion, aged_brie, sulfuras]) }
+    let(:backstage_pass) { 
+      Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=15, quality=20) }
+    let(:gilded_rose) { GildedRose.new([vest, potion, aged_brie, sulfuras, backstage_pass]) }
     
     it 'lowers the sell_in value by one each day as default - vest example' do
       expect { gilded_rose.update_quality }.to change { vest.sell_in }.from(10).to(9)
@@ -63,18 +64,33 @@ describe GildedRose do
         expect(aged_brie.quality).to be(50)
       end
     end
-    # - “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
+    
     context 'Sulfuras' do
       it 'does not alter the sell_in value for Sulfuras, Hand of Ragnaros' do
         gilded_rose.update_quality
-
+        
         expect(sulfuras.sell_in).to eq(0)
       end
-
+      
       it 'does not alter the quality value for Sulfuras, Hand of Ragnaros' do
         gilded_rose.update_quality
-
+        
         expect(sulfuras.quality).to eq(50)
+      end
+    end
+    # - “Backstage passes”, like aged brie, increases in Quality as it’s `SellIn` value approaches; 
+    # Quality increases by 2 when there are 10 days or less and 
+    #  by 3 when there are 5 days or less but Quality drops to 0 after the concert
+    context 'Backstage passes' do
+      it 'increases the quality value by one each day when sell_in is above ten' do
+        5.times { gilded_rose.update_quality }
+
+        expect(backstage_pass.sell_in).to eq(10)
+        expect(backstage_pass.quality).to eq(25)
+      end
+
+      it 'increases the quality value by two when sell_in is ten or less' do
+        
       end
     end
   end
