@@ -70,6 +70,12 @@ describe GildedRose do
 
         expect(sulfuras.sell_in).to eq(0)
       end
+
+      it 'does not alter the quality value for Sulfuras, Hand of Ragnaros' do
+        gilded_rose.update_quality
+
+        expect(sulfuras.quality).to eq(50)
+      end
     end
   end
 end
