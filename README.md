@@ -62,3 +62,4 @@ We have recently signed a supplier of conjured items. This requires an update to
 # TODO
 
 - add simplecov
+- go over how to use context blocks
