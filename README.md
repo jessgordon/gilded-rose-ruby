@@ -58,3 +58,7 @@ We have recently signed a supplier of conjured items. This requires an update to
 # Challenges
 
 - how can I double items instances when their values get changed throughout the update_quality method?
+
+# TODO
+
+- add simplecov

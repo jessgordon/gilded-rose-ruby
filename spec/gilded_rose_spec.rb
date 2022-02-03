@@ -2,8 +2,6 @@ require 'gilded_rose'
 
 describe GildedRose do
   describe '#update_quality' do
-# - At the end of each day our system lowers both values for every item
-
 # - Once the sell by date has passed, Quality degrades twice as fast
 # - The Quality of an item is never negative
 # - The Quality of an item is never more than 50
@@ -30,5 +28,19 @@ describe GildedRose do
     it 'lowers the quality value by one each day as default - potion example' do
       expect { gilded_rose.update_quality }.to change { potion.quality }.from(7).to(6)
     end 
+
+    it 'degrades quality twice as fast once the sell by date has passed - vest example' do
+      11.times { gilded_rose.update_quality }
+
+      expect(vest.sell_in).to eq(-1)
+      expect(vest.quality).to eq(8)
+    end
+
+    it 'degrades quality twice as fast once the sell by date has passed - potion example' do
+      6.times { gilded_rose.update_quality }
+
+      expect(potion.sell_in).to eq(-1)
+      expect(potion.quality).to eq(0)
+    end
   end
 end
