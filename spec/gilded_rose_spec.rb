@@ -90,7 +90,10 @@ describe GildedRose do
       end
 
       it 'increases the quality value by two when sell_in is ten or less' do
-        
+        10.times { gilded_rose.update_quality }
+
+        expect(backstage_pass.sell_in).to eq(5)
+        expect(backstage_pass.quality).to eq(35)
       end
     end
   end
