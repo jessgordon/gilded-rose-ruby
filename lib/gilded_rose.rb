@@ -1,6 +1,7 @@
 class GildedRose
 
   DEFAULT_MAX_QUALITY = 50
+  DEFAULT_MIN_QUALITY = 0
 
   def initialize(items)
     @items = items
@@ -16,15 +17,10 @@ class GildedRose
         elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
           update_backstage_passes_quality(item)
         else
-          if item.quality > 0
-            item.quality = item.quality - 1
-          end
           update_sell_in(item)
-          if item.sell_in < 0
-            if item.quality > 0
-              item.quality = item.quality - 1
-            end
-          end
+          item.quality -= 1
+          item.quality -= 1 if item.sell_in < 0
+          guard_quality_lower_limit(item)
         end
       end
     end
@@ -49,6 +45,10 @@ class GildedRose
 
   def guard_quality_upper_limit(item)
     item.quality = 50 if item.quality > DEFAULT_MAX_QUALITY
+  end
+
+  def guard_quality_lower_limit(item)
+    item.quality = 0 if item.quality < DEFAULT_MIN_QUALITY
   end
 
   def update_sell_in(item)
