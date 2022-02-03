@@ -12,15 +12,13 @@ class GildedRose
   def update_quality
     @items.each do |item|
       unless item.name == "Sulfuras, Hand of Ragnaros"
+        update_sell_in(item)
         if item.name == "Aged Brie"
           update_aged_brie_quality(item)
         elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
           update_backstage_passes_quality(item)
         else
-          update_sell_in(item)
-          item.quality -= 1
-          item.quality -= 1 if item.sell_in < 0
-          guard_quality_lower_limit(item)
+          update_quality_default(item)
         end
       end
     end
@@ -29,18 +27,22 @@ class GildedRose
   private
 
   def update_aged_brie_quality(aged_brie)
-    update_sell_in(aged_brie)
     aged_brie.quality += 1
     guard_quality_upper_limit(aged_brie)
   end
 
   def update_backstage_passes_quality(backstage_pass)
-    update_sell_in(backstage_pass)
     backstage_pass.quality += 1
     backstage_pass.quality += 1 if backstage_pass.sell_in < 10
     backstage_pass.quality += 1 if backstage_pass.sell_in < 5
     backstage_pass.quality = 0 if backstage_pass.sell_in < 0
     guard_quality_upper_limit(backstage_pass)  
+  end
+
+  def update_quality_default(item)
+    item.quality -= 1
+    item.quality -= 1 if item.sell_in < 0
+    guard_quality_lower_limit(item)
   end
 
   def guard_quality_upper_limit(item)
