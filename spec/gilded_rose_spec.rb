@@ -102,6 +102,13 @@ describe GildedRose do
         expect(backstage_pass.sell_in).to eq(0)
         expect(backstage_pass.quality).to eq(50)
       end
+
+      it 'drops the quality value to zero after the concert' do
+        16.times { gilded_rose.update_quality }
+
+        expect(backstage_pass.sell_in).to eq(-1)
+        expect(backstage_pass.quality).to eq(0)
+      end
     end
   end
 end
