@@ -18,5 +18,17 @@ describe GildedRose do
     it 'lowers the sell_in value by one each day as default - vest example' do
       expect { gilded_rose.update_quality }.to change { vest.sell_in }.from(10).to(9)
     end
+
+    it 'lowers the sell_in value by one each day as default - potion example' do
+      expect { gilded_rose.update_quality }.to change { potion.sell_in }.from(5).to(4)
+    end 
+    
+    it 'lowers the quality value by one each day as default - vest example' do
+      expect { gilded_rose.update_quality }.to change { vest.quality }.from(20).to(19)
+    end
+
+    it 'lowers the quality value by one each day as default - potion example' do
+      expect { gilded_rose.update_quality }.to change { potion.quality }.from(7).to(6)
+    end 
   end
 end
