@@ -78,9 +78,7 @@ describe GildedRose do
         expect(sulfuras.quality).to eq(50)
       end
     end
-    # - “Backstage passes”, like aged brie, increases in Quality as it’s `SellIn` value approaches; 
-    # Quality increases by 2 when there are 10 days or less and 
-    #  by 3 when there are 5 days or less but Quality drops to 0 after the concert
+
     context 'Backstage passes' do
       it 'increases the quality value by one each day when sell_in is above ten' do
         5.times { gilded_rose.update_quality }
