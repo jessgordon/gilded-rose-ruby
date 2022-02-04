@@ -1,5 +1,4 @@
 class GildedRose
-
   DEFAULT_MAX_QUALITY = 50
   DEFAULT_MIN_QUALITY = 0
 
@@ -7,11 +6,9 @@ class GildedRose
     @items = items
   end
 
-  #  make a seperate method for update sell_in
-
   def daily_update
     @items.each do |item|
-      unless item.name == "Sulfuras, Hand of Ragnaros"
+      unless item.name == 'Sulfuras, Hand of Ragnaros'
         update_sell_in(item)
         update_quality(item)
       end
@@ -21,9 +18,10 @@ class GildedRose
   private
 
   def update_quality(item)
-    if item.name == "Aged Brie"
+    case item.name
+    when 'Aged Brie'
       update_aged_brie_quality(item)
-    elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
+    when 'Backstage passes to a TAFKAL80ETC concert'
       update_backstage_passes_quality(item)
     else
       update_quality_default(item)
@@ -39,13 +37,13 @@ class GildedRose
     backstage_pass.quality += 1
     backstage_pass.quality += 1 if backstage_pass.sell_in < 10
     backstage_pass.quality += 1 if backstage_pass.sell_in < 5
-    backstage_pass.quality = 0 if backstage_pass.sell_in < 0
-    guard_quality_upper_limit(backstage_pass)  
+    backstage_pass.quality = 0 if backstage_pass.sell_in.negative?
+    guard_quality_upper_limit(backstage_pass)
   end
 
   def update_quality_default(item)
     item.quality -= 1
-    item.quality -= 1 if item.sell_in < 0
+    item.quality -= 1 if item.sell_in.negative?
     guard_quality_lower_limit(item)
   end
 
@@ -71,7 +69,7 @@ class Item
     @quality = quality
   end
 
-  def to_s()
+  def to_s
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
