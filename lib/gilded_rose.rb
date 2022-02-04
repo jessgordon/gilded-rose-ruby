@@ -1,8 +1,12 @@
 class GildedRose
-  DEFAULT_MAX_QUALITY = 50
-  DEFAULT_MIN_QUALITY = 0
-  DEFAULT_QUALITY_DAILY_DECREASE = 1
-  DEFAULT_SELL_IN_DAILY_DECREASE = 1
+  MAX_QUALITY = 50
+  MIN_QUALITY = 0
+
+  ONE_QUALITY_UNIT = 1
+  ONE_SELL_IN_UNIT = 1
+
+  TEN_DAYS = 10
+  FIVE_DAYS = 5
 
   def initialize(items)
     @items = items
@@ -33,15 +37,15 @@ class GildedRose
   end
 
   def update_aged_brie_quality(aged_brie)
-    aged_brie.quality += 1
+    aged_brie.quality += ONE_QUALITY_UNIT
     guard_quality_upper_limit(aged_brie)
   end
 
   def update_backstage_passes_quality(backstage_pass)
-    backstage_pass.quality += 1
-    backstage_pass.quality += 1 if backstage_pass.sell_in < 10
-    backstage_pass.quality += 1 if backstage_pass.sell_in < 5
-    backstage_pass.quality = 0 if backstage_pass.sell_in.negative?
+    backstage_pass.quality += ONE_QUALITY_UNIT
+    backstage_pass.quality += ONE_QUALITY_UNIT if backstage_pass.sell_in < TEN_DAYS
+    backstage_pass.quality += ONE_QUALITY_UNIT if backstage_pass.sell_in < FIVE_DAYS
+    backstage_pass.quality = MIN_QUALITY if backstage_pass.sell_in.negative?
     guard_quality_upper_limit(backstage_pass)
   end
 
@@ -51,21 +55,21 @@ class GildedRose
   end
 
   def update_quality_default(item)
-    item.quality -= DEFAULT_QUALITY_DAILY_DECREASE
-    item.quality -= DEFAULT_QUALITY_DAILY_DECREASE if item.sell_in.negative?
+    item.quality -= ONE_QUALITY_UNIT
+    item.quality -= ONE_QUALITY_UNIT if item.sell_in.negative?
     guard_quality_lower_limit(item)
   end
 
   def guard_quality_upper_limit(item)
-    item.quality = 50 if item.quality > DEFAULT_MAX_QUALITY
+    item.quality = MAX_QUALITY if item.quality > MAX_QUALITY
   end
 
   def guard_quality_lower_limit(item)
-    item.quality = DEFAULT_MIN_QUALITY if item.quality < DEFAULT_MIN_QUALITY
+    item.quality = MIN_QUALITY if item.quality < MIN_QUALITY
   end
 
   def update_sell_in(item)
-    item.sell_in -= DEFAULT_SELL_IN_DAILY_DECREASE
+    item.sell_in -= ONE_SELL_IN_UNIT
   end
 end
 
