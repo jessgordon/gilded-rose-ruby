@@ -8,22 +8,22 @@ describe GildedRose do
       let(:vest) { Item.new('+5 Dexterity Vest', 10, 20) }
       let(:gilded_rose) { GildedRose.new([vest]) }
 
-      it 'lowers the sell_in value by one each day as default - vest example' do
+      it 'lowers the sell_in value by one each day as default' do
         expect { gilded_rose.daily_update }.to change { vest.sell_in }.from(10).to(9)
       end
 
-      it 'lowers the quality value by one each day as default - vest example' do
+      it 'lowers the quality value by one each day as default' do
         expect { gilded_rose.daily_update }.to change { vest.quality }.from(20).to(19)
       end
 
-      it 'degrades quality twice as fast once the sell by date has passed - vest example' do
+      it 'degrades quality twice as fast once the sell by date has passed' do
         11.times { gilded_rose.daily_update }
 
         expect(vest.sell_in).to eq(-1)
         expect(vest.quality).to eq(8)
       end
 
-      it 'ensures the quality of an item is never negative - vest example' do
+      it 'ensures the quality of an item is never negative' do
         20.times { gilded_rose.daily_update }
 
         expect(vest.quality).to eq(0)
@@ -101,6 +101,24 @@ describe GildedRose do
         expect(backstage_pass.sell_in).to eq(-1)
         expect(backstage_pass.quality).to eq(0)
       end
+    end
+
+    context 'when the item is Conjured' do
+      let(:conjured) { Item.new("Conjured Mana Cake", 3, 20) }
+      let(:gilded_rose) { GildedRose.new([conjured]) }
+
+      it 'lowers the sell_in value by one each day' do
+        expect { gilded_rose.daily_update }.to change { conjured.sell_in }.from(3).to(2)
+      end
+
+      it 'lowers the quality value twice as fast as the default - while within sell by date' do
+        expect { gilded_rose.daily_update }.to change { conjured.quality }.from(20).to(18)
+      end
+
+      it 'lowers the quality value twice as fast as the default - when passed the sell by date' do
+        3.times { gilded_rose.daily_update }
+        expect { gilded_rose.daily_update }.to change { conjured.quality }.from(14).to(10)
+      end   
     end
   end
 end

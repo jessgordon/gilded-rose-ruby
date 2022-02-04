@@ -1,6 +1,8 @@
 class GildedRose
   DEFAULT_MAX_QUALITY = 50
   DEFAULT_MIN_QUALITY = 0
+  DEFAULT_QUALITY_DAILY_DECREASE = 1
+  DEFAULT_SELL_IN_DAILY_DECREASE = 1
 
   def initialize(items)
     @items = items
@@ -23,6 +25,8 @@ class GildedRose
       update_aged_brie_quality(item)
     when 'Backstage passes to a TAFKAL80ETC concert'
       update_backstage_passes_quality(item)
+    when 'Conjured Mana Cake'
+      update_conjured_quality(item)
     else
       update_quality_default(item)
     end
@@ -41,9 +45,14 @@ class GildedRose
     guard_quality_upper_limit(backstage_pass)
   end
 
+  def update_conjured_quality(item)
+    update_quality_default(item)
+    update_quality_default(item)
+  end
+
   def update_quality_default(item)
-    item.quality -= 1
-    item.quality -= 1 if item.sell_in.negative?
+    item.quality -= DEFAULT_QUALITY_DAILY_DECREASE
+    item.quality -= DEFAULT_QUALITY_DAILY_DECREASE if item.sell_in.negative?
     guard_quality_lower_limit(item)
   end
 
@@ -52,11 +61,11 @@ class GildedRose
   end
 
   def guard_quality_lower_limit(item)
-    item.quality = 0 if item.quality < DEFAULT_MIN_QUALITY
+    item.quality = DEFAULT_MIN_QUALITY if item.quality < DEFAULT_MIN_QUALITY
   end
 
   def update_sell_in(item)
-    item.sell_in -= 1
+    item.sell_in -= DEFAULT_SELL_IN_DAILY_DECREASE
   end
 end
 
