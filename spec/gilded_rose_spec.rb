@@ -104,7 +104,7 @@ describe GildedRose do
     end
 
     context 'when the item is Conjured' do
-      let(:conjured) { Item.new("Conjured Mana Cake", 3, 20) }
+      let(:conjured) { Item.new('Conjured Mana Cake', 3, 20) }
       let(:gilded_rose) { GildedRose.new([conjured]) }
 
       it 'lowers the sell_in value by one each day' do
