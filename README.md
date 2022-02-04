@@ -1,5 +1,4 @@
 # Gilded rose tech test
-
 ## Spec
 
 This is a well known kata developed by [Terry Hughes](http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/). This is commonly used as a tech test to assess a candidate's ability to read, refactor and extend legacy code.
@@ -38,29 +37,61 @@ https://docs.google.com/forms/d/e/1FAIpQLSdi4pNXpobmSpdw8T0dml4m6NrQ71IdEzwO5hA9
 
 ## Planning
 
-- item
-  - `SellIn` value: denotes the number of days we have to sell the item
-  - `Quality` value: denotes how valuable the item is
+### Approach
+- read through current codebase
+- draft input/ output for each type of item
+- write tests for each input / output
+  - check these pass to confirm I've understood the codebase correctly
+- refactor the current codebase to improve:
+  - readability
+  - separation of concerns
+  - DRY
+  - easy to change and update
+  - ensure all tests passing with each refactored area
+- add on the new functionality using TDD approach
+- refactor further where possible
+- create a feature test
+
+### Drafting out the interactions
+- item instance
+  - `name` value: string - name of the item
+  - `sell_in` value: int - denotes the number of days we have to sell the item
+  - `quality` value: int - denotes how valuable the item is
   
-- At the end of each day our system lowers both values for every item
+- At the end of each day:
+  - DEFAULT:
+    - `sell_in` 
+      - value drops by one
+    - `quality` 
+      - value drops by one 
+      - upper limit of 50
+      - lower limit of 0
+      - `sell_in` < 0 => `quality` value degrades twice as fast
+  - “Aged Brie” 
+    - `sell_in` 
+      - value drops by one
+    - `quality` 
+      - value increases by one
+  - “Sulfuras”
+    - `sell_in` 
+      - doesn't change
+    - `quality` 
+      - doesn't change
+  - “Backstage passes”
+    - `sell_in` 
+      - value drops by one
+    - `quality` 
+      - value increases by one when `sell_in` > 10
+      - value increases by two when `sell_in` <= 10
+      - value increases by three when `sell_in` <= 5
+      - value drops to zero when `sell_in` < 0
+  - “Conjured”
+     - `sell_in` 
+      - value drops by one
+    - `quality` 
+      - value drops by two
+## Challenges
 
-- Once the sell by date has passed, Quality degrades twice as fast
-- The Quality of an item is never negative
-- “Aged Brie” actually increases in Quality the older it gets
-- The Quality of an item is never more than 50
-- “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
-- “Backstage passes”, like aged brie, increases in Quality as it’s `SellIn` value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert
+- how can I double item instances when their values get changed throughout the update_quality method?
+  - stubbing this feels like I would be automatically passing the tests with my stub?
 
-We have recently signed a supplier of conjured items. This requires an update to our system:
-
-* “Conjured” items degrade in Quality twice as fast as normal items
-
-# Challenges
-
-- how can I double items instances when their values get changed throughout the update_quality method?
-
-# TODO
-
-- add simplecov
-- go over how to use context blocks
-- add some more tests for sell_in to check that's decreasing as it should be
